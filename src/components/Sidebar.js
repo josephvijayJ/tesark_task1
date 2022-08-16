@@ -43,6 +43,7 @@ const Sidebar = () => {
           flexDirection="column"
           align="center"
           justifyContent="center"
+          cursor="pointer"
         >
           {data.map((item, index) => (
             <Box m="5px">

@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import Sidebar from './Sidebar';
 import Checkcomponent from './Checkcomponent';
-import Sidebar1 from './Sidebar1';
+import Sidebar1 from './Mobilebar1';
 
 const Topbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
