@@ -1,10 +1,15 @@
 import './App.css';
 import MasterForm from './pages/MasterForm';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <>
-      <MasterForm />
+      <Router>
+        <Routes>
+          <Route path="/" element={<MasterForm />} />
+        </Routes>
+      </Router>
     </>
   );
 }

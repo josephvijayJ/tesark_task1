@@ -9,21 +9,20 @@ import {
 } from '@chakra-ui/react';
 import data from '../sidebarData.json';
 
-const Sidebar = () => {
+const Sidebar1 = () => {
   // let values = JSON.parse(data);
   console.log(data);
   return (
     <>
       <Box
-        flexDirection={{ lg: 'column' }}
+        flexDirection="column"
         w="270px"
         h="100vh"
         borderRadius="4px"
         bg="#373737"
         alignItems="center"
         gap="10px"
-        // display={['none', 'none', 'none', 'flex']}
-        display={{ base: 'none', md: 'none', lg: 'flex' }}
+        display="flex"
       >
         <Box align="center">
           <Button w="200px" borderRadius="8px" bg="#E45159" mt="10px">
@@ -92,7 +91,7 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebar1;
 
 // height: 48px;
 // width: 200px;
