@@ -9,9 +9,7 @@ import {
 } from '@chakra-ui/react';
 import data from '../sidebarData.json';
 
-const Sidebar1 = () => {
-  // let values = JSON.parse(data);
-  console.log(data);
+const Mobilebar = () => {
   return (
     <>
       <Box
@@ -36,7 +34,6 @@ const Sidebar1 = () => {
         <Box
           borderRadius="8px"
           border="1px solid #E45159"
-          // h="763px"
           w="200px"
           dispaly="flex"
           flexDirection="column"
@@ -44,10 +41,9 @@ const Sidebar1 = () => {
           justifyContent="center"
         >
           {data.map((item, index) => (
-            <Box m="5px">
+            <Box m="5px" key={index}>
               <Text
                 color="#ffff"
-                key={index}
                 mb="4px"
                 textAlign="left"
                 ml="40px"
@@ -57,7 +53,12 @@ const Sidebar1 = () => {
               </Text>
               {item.subdata.length !== 0 &&
                 item.subdata.map((ele, index) => (
-                  <Accordion defaultIndex={[1]} allowMultiple color="white">
+                  <Accordion
+                    defaultIndex={[1]}
+                    allowMultiple
+                    color="white"
+                    key={index}
+                  >
                     <AccordionItem borderStyle="none">
                       <h2>
                         <AccordionButton>
@@ -71,17 +72,12 @@ const Sidebar1 = () => {
                         flexDirection="column"
                         textAlign="right"
                       >
-                        {/* {console.log('data', ele)} */}
-                        {ele.data.map((item) => {
-                          return <Text>{item.val}</Text>;
+                        {ele.data.map((item, index) => {
+                          return <Text key={index}>{item.val}</Text>;
                         })}
                       </AccordionPanel>
                     </AccordionItem>
                   </Accordion>
-                  // <>
-                  //   <Text>{ele.name}</Text>
-                  //   <Text>{ele.data}</Text>
-                  // </>
                 ))}
             </Box>
           ))}
@@ -91,11 +87,4 @@ const Sidebar1 = () => {
   );
 };
 
-export default Sidebar1;
-
-// height: 48px;
-// width: 200px;
-// left: 35px;
-// top: 40px;
-// border-radius: 8px;
-// padding: 10px;
+export default Mobilebar;

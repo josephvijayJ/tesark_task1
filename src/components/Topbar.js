@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import Sidebar from './Sidebar';
 import Checkcomponent from './Checkcomponent';
-import Sidebar1 from './Mobilebar1';
+import Mobilebar from './Mobilebar';
 
 const Topbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,8 +45,6 @@ const Topbar = () => {
           alt="Sneha logo"
         />{' '}
         <Box ml="10px">HOTEL TEAM</Box>
-        {/* <HamburgerIcon display={['block', 'block', 'block', 'none']} /> */}
-        {/* side bar */}
         <>
           <Button
             ref={btnRef}
@@ -71,9 +69,7 @@ const Topbar = () => {
               />
 
               <DrawerBody>
-                <>
-                  <Sidebar1 />
-                </>
+                <Mobilebar />
               </DrawerBody>
             </DrawerContent>
           </Drawer>
@@ -84,15 +80,3 @@ const Topbar = () => {
 };
 
 export default Topbar;
-// Weight
-// 700
-// Size
-// 36.96px
-
-// 119.21px
-// Height
-// 27.82px
-// Line height
-// 43.39px
-// Letter
-// 1%

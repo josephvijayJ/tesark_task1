@@ -15,24 +15,21 @@ const CommonInput = ({
   onChange,
   value,
   onBlur,
+  title,
 }) => {
   return (
-    <>
-      <InputGroup>
-        <InputLeftAddon children={label} bg="#ffff" />
-        <Input
-          type={type}
-          name={name}
-          onChange={onChange}
-          value={value}
-          onBlur={onBlur}
-          placeholder={placeholder}
-        />
-      </InputGroup>
-      {formik.touched.name && formik.errors.name ? (
-        <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
-      ) : null}
-    </>
+    <InputGroup>
+      <InputLeftAddon children={label} bg="#ffff" />
+      <Input
+        type={type}
+        name={name}
+        onChange={onChange}
+        value={value}
+        placeholder={placeholder}
+        onBlur={onBlur}
+        title={title}
+      />
+    </InputGroup>
   );
 };
 

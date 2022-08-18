@@ -3,13 +3,9 @@ import React from 'react';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import MasterformScreen from '../screens/MasterformScreen';
-import { useDispatch, useSelector } from 'react-redux';
-import { masterFormSubmit } from '../actions/MasterFormactions';
+import { useSelector } from 'react-redux';
 
 const MasterForm = () => {
-  const dispatch = useDispatch();
-
-  dispatch(masterFormSubmit());
   const data = useSelector((state) => state.masterForm);
   console.log('reducer Data', data);
   return (
@@ -30,7 +26,3 @@ const MasterForm = () => {
 };
 
 export default MasterForm;
-{
-  /* <GridItem colSpan={2} h='10' bg='tomato' />
-  <GridItem colStart={4} colEnd={6} h='10' bg='papayawhip' /> */
-}

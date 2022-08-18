@@ -1,10 +1,8 @@
 import axios from 'axios';
-export const masterFormSubmit = () => async (dispatch, getState) => {
+export const masterFormSubmit = (values) => async (dispatch, getState) => {
   console.log('entered form submit in redux');
-  // const { data } = await axios.get(`/api/products/${id}`);
-  // console.log(data);
-  let data = 'form submitted successfully';
-  let errData = 'form submission error';
+  //https://614eabfdb4f6d30017b482d2.mockapi.io/:endpoint
+
   try {
     dispatch({
       type: 'USER_SUBMIT_REQUEST',
@@ -15,11 +13,11 @@ export const masterFormSubmit = () => async (dispatch, getState) => {
     //   },
     // };
 
-    // const { data } = await axios.post(
-    //   '/api/users/product',
-    //   {},
-    //   config
-    // );
+    const { data } = await axios.post(
+      ' https://614eabfdb4f6d30017b482d2.mockapi.io/formData',
+      values
+    );
+    console.log('formData', data);
     dispatch({
       type: 'USER_SUBMIT_SUCCESS',
       payload: data,
@@ -27,7 +25,7 @@ export const masterFormSubmit = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: 'USER_SUBMIT_FAIL',
-      payload: errData,
+      payload: error,
     });
   }
 
