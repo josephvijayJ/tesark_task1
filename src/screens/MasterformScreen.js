@@ -7,29 +7,27 @@ import {
   FormControl,
   Select,
   Button,
-  InputRightAddon,
   Radio,
   RadioGroup,
   Input,
-  Flex,
-  Center,
   Container,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import React, { useState } from 'react';
 import { AddIcon } from '@chakra-ui/icons';
 import * as Yup from 'yup';
-import axios from 'axios';
-
-// https://crudcrud.com/api/9dc6202cc6f742ed905f4997cb5ed3ef
+import CommonInput from '../components/CommonInput';
+import { masterFormSubmit } from '../actions/MasterFormactions';
+import { useDispatch } from 'react-redux';
 
 const MasterformScreen = () => {
   const [radioValue, setradioValue] = useState('morning');
   const [file, setFile] = useState({});
-
+  // const [base64, setBase64] = useState('');
+  const [formData, setFormData] = useState('');
+  const dispatch = useDispatch();
   const convertToBase64 = (filer) => {
-    console.log('fileinsideBase64', filer);
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(filer);
@@ -41,29 +39,25 @@ const MasterformScreen = () => {
       };
     });
   };
-  const fileUpload = async (event) => {
-    console.log(event);
-    setFile(event.target.files[0]);
-    console.log('file', file);
-    const filer = event.target.files[0];
-    const base64 = await convertToBase64(filer);
-    console.log('base64', base64);
+  // const fileUpload = async (event) => {
+  //   console.log('entered onChange file upload');
+  //   setFile(event.target.files[0]);
+  //   const filer = event.target.files[0];
+  //   setBase64(await convertToBase64(filer));
+  // };
+  // console.log('base64', base64);
+  const fileUpload = (e) => {
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
+    const fileName = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', fileName);
+    console.log('form-Data', formData);
+    setFormData(formData);
   };
-  // console.log('file', file);
-  // console.log('filename', file.name);
-
   const selectFile = () => {
     console.log('file selected');
     document.getElementById('selectfile').click();
-  };
-  //adding to crud crud
-  const formSubmit = async (values) => {
-    console.log('alues inside submit', values);
-    const data = await axios.post(
-      'https://crudcrud.com/api/9dc6202cc6f742ed905f4997cb5ed3ef/product',
-      values
-    );
-    console.log(data);
   };
 
   const formik = useFormik({
@@ -71,14 +65,13 @@ const MasterformScreen = () => {
       name: '',
       contact: '',
       aadhar: '',
-      stockpoint: '',
-      joiningdate: '',
-      reportingmanager: '',
-      bloodgroup: '',
-      emergencycontact: '',
-      //  aadharupload: JSON.stringify(file.name),
+      stockPoint: '',
+      joiningDate: '',
+      reportingManager: '',
+      bloodGroup: '',
+      emergencyContact: '',
       position: '',
-      employeetype: '',
+      employeeType: '',
       shift: radioValue,
     },
     validationSchema: Yup.object({
@@ -89,15 +82,14 @@ const MasterformScreen = () => {
       aadhar: Yup.string().required('Required'),
     }),
     onSubmit: (values) => {
-      console.log('values', values);
-      formSubmit(values);
+      dispatch(masterFormSubmit(values, formData));
     },
   });
   return (
-    <Container maxW="3xl">
-      <form onSubmit={formik.handleSubmit}>
+    <Container maxW={{ lg: '3xl' }} alignItems="left">
+      <Box as="form" onSubmit={formik.handleSubmit}>
         <Box p={['20px', '20px']}>
-          <Text fontWeight="400" fontSize="32px" textAlign="center">
+          <Text fontWeight="400" fontSize={['28px', '32px']} textAlign="center">
             Employee Master Form
           </Text>
           <Text fontWeight="400" fontSize="24px" mt="12px">
@@ -110,51 +102,59 @@ const MasterformScreen = () => {
           >
             <Box>
               <Stack spacing={4} mt="20px">
-                <FormControl isInvalid={formik.errors.name}>
-                  <InputGroup>
-                    <InputLeftAddon children="Employee Name" bg="#ffff" />
-                    <Input
-                      type="text"
-                      name="name"
-                      onChange={formik.handleChange}
-                      value={formik.values.name}
-                      onBlur={formik.handleBlur}
-                    />
-                  </InputGroup>
+                <FormControl
+                  isInvalid={formik.errors.name && formik.touched.name}
+                >
+                  <CommonInput
+                    type="text"
+                    name="name"
+                    title="empName"
+                    onChange={formik.handleChange}
+                    value={formik.values.name}
+                    label="Employee Name"
+                    formik={formik}
+                    onBlur={formik.handleBlur}
+                  />
+                  {/* {console.log('formik', formik.errors.name)} */}
                   {formik.touched.name && formik.errors.name ? (
                     <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                   ) : null}
                 </FormControl>
 
                 {/* <FormErrorMessage>{form.errors.name}</FormErrorMessage> */}
-                <FormControl isInvalid={formik.errors.contact}>
-                  <InputGroup>
-                    <InputLeftAddon children="Contact Num" bg="#ffff" />
-                    <Input
-                      type="text"
-                      placeholder="90 12 43 65 76"
-                      name="contact"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.contact}
-                    />
-                  </InputGroup>
+                {/* {console.log('formik contact', formik.errors.contact)}
+                {console.log(formik)} */}
+                <FormControl
+                  isInvalid={formik.errors.contact && formik.touched.contact}
+                >
+                  <CommonInput
+                    type="text"
+                    placeholder="90 12 43 65 76"
+                    name="contact"
+                    formik={formik}
+                    label="Contact"
+                    onChange={formik.handleChange}
+                    value={formik.values.contact}
+                    onBlur={formik.handleBlur}
+                  />
                   {formik.touched.contact && formik.errors.contact ? (
                     <FormErrorMessage>{formik.errors.contact}</FormErrorMessage>
                   ) : null}
                 </FormControl>
-                <FormControl isInvalid={formik.errors.aadhar}>
-                  <InputGroup>
-                    <InputLeftAddon children="Aadhar Number" bg="#ffff" />
-                    <Input
-                      type="text"
-                      placeholder="1800545"
-                      name="aadhar"
-                      onChange={formik.handleChange}
-                      value={formik.values.aadhar}
-                      onBlur={formik.handleBlur}
-                    />
-                  </InputGroup>
+
+                <FormControl
+                  isInvalid={formik.errors.aadhar && formik.touched.aadhar}
+                >
+                  <CommonInput
+                    type="text"
+                    placeholder="180 0545 3031"
+                    name="aadhar"
+                    formik={formik}
+                    label="Aadhar"
+                    onChange={formik.handleChange}
+                    value={formik.values.aadhar}
+                    onBlur={formik.handleBlur}
+                  />
                   {formik.touched.aadhar && formik.errors.aadhar ? (
                     <FormErrorMessage>{formik.errors.aadhar}</FormErrorMessage>
                   ) : null}
@@ -165,9 +165,9 @@ const MasterformScreen = () => {
                     <InputLeftAddon children="Stock point" bg="#ffff" />
                     <Select
                       placeholder="Select option"
-                      name="stockpoint"
+                      name="stockPoint"
                       onChange={formik.handleChange}
-                      value={formik.values.stockpoint}
+                      value={formik.values.stockPoint}
                     >
                       <option value="option1">Option 1</option>
                       <option value="option2">Option 2</option>
@@ -182,67 +182,79 @@ const MasterformScreen = () => {
                     <Input
                       type="datetime-local"
                       placeholder="DD/MM/YY"
-                      name="joiningdate"
+                      name="joiningDate"
                       onChange={formik.handleChange}
-                      value={formik.values.joiningdate}
+                      value={formik.values.joiningDate}
                     />
                   </InputGroup>
                 </FormControl>
 
                 <FormControl>
-                  <InputGroup>
-                    <InputLeftAddon children="Reporting Manager" bg="#ffff" />
-                    <Input
-                      type="text"
-                      name="reportingmanager"
-                      onChange={formik.handleChange}
-                      value={formik.values.reportingmanager}
-                    />
-                  </InputGroup>
+                  <CommonInput
+                    type="text"
+                    name="reportingManager"
+                    formik={formik}
+                    label="Reporting Manager"
+                    onChange={formik.handleChange}
+                    value={formik.values.reportingManager}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.reportingManager &&
+                  formik.errors.reportingManager ? (
+                    <FormErrorMessage>
+                      {formik.errors.reportingManager}
+                    </FormErrorMessage>
+                  ) : null}
                 </FormControl>
               </Stack>
             </Box>
             <Box>
               <Stack spacing={4} mt="20px">
                 <FormControl>
-                  <InputGroup>
-                    <InputLeftAddon children="Blood group" bg="#ffff" />
-                    <Input
-                      type="text"
-                      name="bloodgroup"
-                      onChange={formik.handleChange}
-                      value={formik.values.bloodgroup}
-                    />
-                  </InputGroup>
+                  <CommonInput
+                    type="text"
+                    name="bloodGroup"
+                    formik={formik}
+                    label="Bood Group"
+                    onChange={formik.handleChange}
+                    value={formik.values.bloodGroup}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.bloodGroup && formik.errors.bloodGroup ? (
+                    <FormErrorMessage>
+                      {formik.errors.bloodGroup}
+                    </FormErrorMessage>
+                  ) : null}
                 </FormControl>
                 <FormControl>
-                  <InputGroup>
-                    <InputLeftAddon
-                      children="Emergency Contact Num"
-                      bg="#ffff"
-                    />
-                    <Input
-                      type="text"
-                      placeholder="444 444 444"
-                      name="emergencycontact"
-                      onChange={formik.handleChange}
-                      value={formik.values.emergencycontact}
-                    />
-                  </InputGroup>
+                  <CommonInput
+                    type="text"
+                    placeholder="444 444 444"
+                    name="emergencyContact"
+                    formik={formik}
+                    label="Emergency Num"
+                    onChange={formik.handleChange}
+                    value={formik.values.emergencyContact}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.emergencyContact &&
+                  formik.errors.emergencyContact ? (
+                    <FormErrorMessage>
+                      {formik.errors.emergencyContact}
+                    </FormErrorMessage>
+                  ) : null}
                 </FormControl>
 
                 <Box border="0.5px solid #e2e8f0" borderRadius="5px">
                   <InputGroup>
-                    {/* <button>File Upload</button> */}
-
                     <Input
                       id="selectfile"
                       display="none"
                       type="file"
                       placeholder="Aadhar Proof Upload"
-                      name="aadharupload"
+                      name="aadharUpload"
                       onChange={fileUpload}
-                      value={formik.values.aadharupload}
+                      // value={formik.values.aadharUpload}
                     />
                     <InputLeftAddon
                       children={<AddIcon onClick={selectFile} />}
@@ -252,6 +264,7 @@ const MasterformScreen = () => {
                     </Text>
                   </InputGroup>
                 </Box>
+
                 <InputGroup>
                   <InputLeftAddon children="Position/Title" bg="#ffff" />
                   <Select
@@ -269,9 +282,9 @@ const MasterformScreen = () => {
                   <InputLeftAddon children="Employee type" bg="#ffff" />
                   <Select
                     placeholder="Select option"
-                    name="employeetype"
+                    name="employeeType"
                     onChange={formik.handleChange}
-                    value={formik.values.employeetype}
+                    value={formik.values.employeeType}
                   >
                     <option value="option1">Option 1</option>
                     <option value="option2">Option 2</option>
@@ -311,7 +324,7 @@ const MasterformScreen = () => {
             </Button>
           </Box>
         </Box>
-      </form>
+      </Box>
     </Container>
   );
 };

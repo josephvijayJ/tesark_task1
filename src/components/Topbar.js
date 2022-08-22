@@ -19,9 +19,10 @@ import {
   DrawerCloseButton,
 } from '@chakra-ui/react';
 import Sidebar from './Sidebar';
+import Checkcomponent from './Checkcomponent';
+import Mobilebar from './Mobilebar';
 
 const Topbar = () => {
-  const [sidebar, setsideBar] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
@@ -30,7 +31,7 @@ const Topbar = () => {
       <Box
         color="#D61119"
         fontWeight="700"
-        fontSize="37px"
+        fontSize={['33px', '37px']}
         lineheight="43.px"
         letterSpacing="1%"
         display="flex"
@@ -38,14 +39,12 @@ const Topbar = () => {
         justifyContent="center"
       >
         <Image
-          width="120px"
+          width={['90px', '120px']}
           height="27px"
           src={require('../images/sneha logo red 1.png')}
           alt="Sneha logo"
         />{' '}
         <Box ml="10px">HOTEL TEAM</Box>
-        {/* <HamburgerIcon display={['block', 'block', 'block', 'none']} /> */}
-        {/* side bar */}
         <>
           <Button
             ref={btnRef}
@@ -63,10 +62,14 @@ const Topbar = () => {
           >
             <DrawerOverlay />
             <DrawerContent>
-              <DrawerCloseButton />
+              <DrawerCloseButton
+                marginRight="20px"
+                marginTop="5px"
+                color="#ffff"
+              />
 
               <DrawerBody>
-                <Sidebar />
+                <Mobilebar />
               </DrawerBody>
             </DrawerContent>
           </Drawer>
@@ -77,15 +80,3 @@ const Topbar = () => {
 };
 
 export default Topbar;
-// Weight
-// 700
-// Size
-// 36.96px
-
-// 119.21px
-// Height
-// 27.82px
-// Line height
-// 43.39px
-// Letter
-// 1%

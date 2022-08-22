@@ -1,5 +1,4 @@
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import {
   Accordion,
@@ -10,32 +9,23 @@ import {
 } from '@chakra-ui/react';
 import data from '../sidebarData.json';
 
-const Sidebar = () => {
+const Mobilebar = () => {
   return (
     <>
       <Box
+        flexDirection="column"
         w="270px"
         h="100vh"
         borderRadius="4px"
         bg="#373737"
         alignItems="center"
         gap="10px"
-        display={{ base: 'none', md: 'none', lg: 'flex' }}
-        flexDirection={{ lg: 'column' }}
+        display="flex"
       >
         <Box align="center">
-          <Link to="/new">
-            <Button
-              w="200px"
-              borderRadius="8px"
-              bg="#E45159"
-              mt="10px"
-              data-testid="customerPage"
-            >
-              <Text color="#FFFFFF">Add Customer +</Text>
-            </Button>
-          </Link>
-
+          <Button w="200px" borderRadius="8px" bg="#E45159" mt="10px">
+            <Text color="#FFFFFF">Add Customer +</Text>
+          </Button>
           <Button w="200px" borderRadius="8px" p="10px" bg="#18B83B" mt="10px">
             <Text color="#FFFFFF">Daily Indents</Text>
           </Button>
@@ -49,13 +39,11 @@ const Sidebar = () => {
           flexDirection="column"
           align="center"
           justifyContent="center"
-          cursor="pointer"
         >
           {data.map((item, index) => (
             <Box m="5px" key={index}>
               <Text
                 color="#ffff"
-                key={index}
                 mb="4px"
                 textAlign="left"
                 ml="40px"
@@ -99,4 +87,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Mobilebar;
