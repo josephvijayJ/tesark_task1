@@ -24,7 +24,8 @@ import { useDispatch } from 'react-redux';
 const MasterformScreen = () => {
   const [radioValue, setradioValue] = useState('morning');
   const [file, setFile] = useState({});
-  const [base64, setBase64] = useState('');
+  // const [base64, setBase64] = useState('');
+  const [formData, setFormData] = useState('');
   const dispatch = useDispatch();
   const convertToBase64 = (filer) => {
     return new Promise((resolve, reject) => {
@@ -38,12 +39,22 @@ const MasterformScreen = () => {
       };
     });
   };
-  const fileUpload = async (event) => {
-    setFile(event.target.files[0]);
-    const filer = event.target.files[0];
-    setBase64(await convertToBase64(filer));
+  // const fileUpload = async (event) => {
+  //   console.log('entered onChange file upload');
+  //   setFile(event.target.files[0]);
+  //   const filer = event.target.files[0];
+  //   setBase64(await convertToBase64(filer));
+  // };
+  // console.log('base64', base64);
+  const fileUpload = (e) => {
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
+    const fileName = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', fileName);
+    console.log('form-Data', formData);
+    setFormData(formData);
   };
-
   const selectFile = () => {
     console.log('file selected');
     document.getElementById('selectfile').click();
@@ -59,7 +70,6 @@ const MasterformScreen = () => {
       reportingManager: '',
       bloodGroup: '',
       emergencyContact: '',
-
       position: '',
       employeeType: '',
       shift: radioValue,
@@ -72,7 +82,7 @@ const MasterformScreen = () => {
       aadhar: Yup.string().required('Required'),
     }),
     onSubmit: (values) => {
-      dispatch(masterFormSubmit(values));
+      dispatch(masterFormSubmit(values, formData));
     },
   });
   return (
@@ -105,15 +115,15 @@ const MasterformScreen = () => {
                     formik={formik}
                     onBlur={formik.handleBlur}
                   />
-                  {console.log('formik', formik.errors.name)}
+                  {/* {console.log('formik', formik.errors.name)} */}
                   {formik.touched.name && formik.errors.name ? (
                     <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
                   ) : null}
                 </FormControl>
 
                 {/* <FormErrorMessage>{form.errors.name}</FormErrorMessage> */}
-                {console.log('formik contact', formik.errors.contact)}
-                {console.log(formik)}
+                {/* {console.log('formik contact', formik.errors.contact)}
+                {console.log(formik)} */}
                 <FormControl
                   isInvalid={formik.errors.contact && formik.touched.contact}
                 >
